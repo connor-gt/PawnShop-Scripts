@@ -62,15 +62,15 @@ These scripts are good starting points for looking through the project:
 
 ### Building on They Watch
 
-[They Watch](https://github.com/connor-gt/TheyWatch-Scripts) taught me how difficult a larger project could become when useful functionality lived in the wrong classes or behavior was spread across too many parent classes.
+[They Watch](https://github.com/connor-gt/they-watch-scripts) taught me how difficult a larger project could become when useful functionality lived in the wrong classes or behavior was spread across too many parent classes.
 
-One specific example was its [LookAtTarget(...)](https://github.com/connor-gt/TheyWatch-Scripts/blob/main/Scripts/Entities/NonPlayerEntities/StateMachine/EntityState.cs#L127) method, which lived inside the entity state hierarchy. In Pawn Shop, that kind of rotation behavior lives in [GameObjectUtils.cs](Scripts/Core/Utils/GameObjectUtils.cs) as [RotateTowardsTarget(...)](Scripts/Core/Utils/GameObjectUtils.cs#L115-L143), so different systems can use it without inheriting from an entity state.
+One specific example was its [LookAtTarget(...)](https://github.com/connor-gt/they-watch-scripts/blob/main/Scripts/Entities/NonPlayerEntities/StateMachine/EntityState.cs#L127) method, which lived inside the entity state hierarchy. In Pawn Shop, that kind of rotation behavior lives in [GameObjectUtils.cs](Scripts/Core/Utils/GameObjectUtils.cs) as [RotateTowardsTarget(...)](Scripts/Core/Utils/GameObjectUtils.cs#L115-L143), so different systems can use it without inheriting from an entity state.
 
 I'm also giving NPC decisions, reusable states, and supporting modules clearer responsibilities. For example, for [NPC brains](Scripts/Features/Entities/Brain/GenericShopper/GenericShopperBrain.cs) I wanted the brains to handle high-level decision-making like where to go, what to do, order of operations, etc. while not having to repeat actual logic, so I've created [atomic states](Scripts/Features/Entities/State/Shopping/GrabItemState.cs) that do one thing and do it well, [modules](Scripts/Features/Entities/Components/Modules/NavigationModule.cs) that brains delegate specific tasks to, and services that brains can implement when they need it (e.g., a seller NPC with a [seller brain](Scripts/Features/Entities/Brain/GenericSeller/GenericSellerBrain.cs) needing [SellerService](Scripts/Features/Entities/Services/SellerService.cs) while a buyer NPC can use [BuyerService](Scripts/Features/Entities/Services/BuyerService.cs)).
 
 ### Expanding the economy and handling startup
 
-[Crazy Runner](https://github.com/connor-gt/CrazyRunnerV2-Scripts) introduced me to building an in-game economy through its gem balance, shop, and purchases. Pawn Shop makes buying and selling a central part of the gameplay, with individual item conditions, customer preferences, and negotiations affecting each transaction.
+[Crazy Runner](https://github.com/connor-gt/crazy-runner-scripts) introduced me to building an in-game economy through its gem balance, shop, and purchases. Pawn Shop makes buying and selling a central part of the gameplay, with individual item conditions, customer preferences, and negotiations affecting each transaction.
 
 Crazy Runner also had startup dependencies that meant I needed to enter through the main menu when testing gameplay. In Pawn Shop, [Bootstrapper.cs](Scripts/Core/System/Bootstrapper.cs) creates shared systems before the first scene loads, while the [scene readiness system](Scripts/Core/SceneManagement/SceneSwapManager.cs#L195-L227) handles setup that needs to finish before the player sees the scene.
 
